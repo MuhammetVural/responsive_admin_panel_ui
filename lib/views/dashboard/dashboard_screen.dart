@@ -11,8 +11,13 @@ class DashboardScreen extends StatelessWidget {
         child: SafeArea(
             child: Column(
       children: [
-        Container(color: Colors.amber,),
-        
+        Row(
+          children: [
+            Text('Dashboard', style: Theme.of(context).textTheme.headlineSmall,),
+            Container(height: 20, width: 60, color: Colors.yellow  ,),
+            //const TextField(decoration: InputDecoration(fillColor: secondaryColor),)
+          ],
+        ),
       ],
     )));
   }
