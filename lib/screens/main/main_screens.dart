@@ -15,9 +15,10 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: SideMenu(),
@@ -32,29 +33,4 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
-class DrawerListTile extends StatelessWidget {
-  const DrawerListTile({
-    super.key,
-    required this.title,
-    required this.svgSrc,
-    required this.press,
-  });
 
-  final String title, svgSrc;
-  final VoidCallback press;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () {},
-      leading: SvgPicture.asset(
-        svgSrc,
-        colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
-      ),
-      title: Text(
-        title,
-        style: TextStyle(color: Colors.white70),
-      ),
-    );
-  }
-}

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_admin_panel_ui/constants.dart';
 
-import 'views/main/main_screens.dart';
+import 'screens/main/main_screens.dart';
 
 void main() {
   runApp(const MyApp());

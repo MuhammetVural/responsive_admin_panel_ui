@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:responsive_admin_panel_ui/constants.dart';
 
 import '../main_screens.dart';
@@ -61,6 +62,32 @@ class SideMenu extends StatelessWidget {
         
                     ],
                   ),
+      ),
+    );
+  }
+}
+class DrawerListTile extends StatelessWidget {
+  const DrawerListTile({
+    super.key,
+    required this.title,
+    required this.svgSrc,
+    required this.press,
+  });
+
+  final String title, svgSrc;
+  final VoidCallback press;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: () {},
+      leading: SvgPicture.asset(
+        svgSrc,
+        colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+      ),
+      title: Text(
+        title,
+        style: TextStyle(color: Colors.white70),
       ),
     );
   }
