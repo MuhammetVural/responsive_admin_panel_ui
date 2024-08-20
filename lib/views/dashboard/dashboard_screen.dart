@@ -6,14 +6,13 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(defaultPadding),
+    return  SingleChildScrollView(
+      padding: EdgeInsets.all(defaultPadding),
         child: SafeArea(
             child: Column(
       children: [
-        Container(
-          color: Colors.green,
-        ),
+        Container(color: Colors.amber,),
+        
       ],
     )));
   }
