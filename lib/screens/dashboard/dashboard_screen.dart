@@ -16,32 +16,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final List<Map<String, String>> storageInfoList = [
-    {
-      'title': 'Documents Files',
-      'files': '1234 Files',
-      'capacity': '1.4GB',
-      'svgSource': 'assets/icons/doc_file.svg',
-    },
-    {
-      'title': 'Media Files',
-      'files': '1234 Files',
-      'capacity': '1.4GB',
-      'svgSource': 'assets/icons/media.svg',
-    },
-    {
-      'title': 'Other Files',
-      'files': '1234 Files',
-      'capacity': '1.4GB',
-      'svgSource': 'assets/icons/folder.svg',
-    },
-    {
-      'title': 'Unknown',
-      'files': '1234 Files',
-      'capacity': '1.4GB',
-      'svgSource': 'assets/icons/unknown.svg',
-    },
-  ];
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -51,15 +25,64 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             Header(),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   flex: 4,
                   child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: secondaryColor,
+                    margin: EdgeInsets.symmetric(vertical: defaultPadding),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(bottom: defaultPadding),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'My Files',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                              ),
+                              ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: primaryColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                                label: Text(
+                                  'Add New',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        
+                        GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            crossAxisSpacing: defaultPadding,
+                          ),
+                          itemCount: 4,
+                          itemBuilder: (context, index) => GridContainer(title: '$index',),
+                        ),
+                      ],
                     ),
-                    height: MediaQuery.of(context).size.height,
                   ),
                 ),
                 Expanded(
@@ -96,3 +119,51 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
+class GridContainer extends StatelessWidget {
+  const GridContainer({
+    super.key, required this.title,
+  });
+  final String title ;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(defaultPadding),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), color: secondaryColor),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: EdgeInsets.all(defaultPadding * 0.75),
+                decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10)),
+                child: SvgPicture.asset('assets/icons/Documents.svg'),
+              ),
+              Icon(Icons.menu)
+            ],
+          ),
+          Text(
+            'Documents',
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(fontWeight: FontWeight.bold, ),
+          ),
+          Text('------'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+            Text('1234 Files', style: Theme.of(context).textTheme.labelSmall?.copyWith(color: Colors.white70),),
+            Text('1.9GB', style: Theme.of(context).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold),),
+          ],)
+        ],
+      ),
+    );
+  }
+}
