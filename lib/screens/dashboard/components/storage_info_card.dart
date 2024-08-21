@@ -11,6 +11,7 @@ class StorageInfoCard extends StatelessWidget {
     required this.files,
     required this.svgSource,
   });
+  
 
     final String capacity, title, files, svgSource;
 

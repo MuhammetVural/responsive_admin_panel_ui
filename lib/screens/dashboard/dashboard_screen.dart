@@ -6,10 +6,42 @@ import 'package:responsive_admin_panel_ui/constants.dart';
 import 'components/chart.dart';
 import 'components/header.dart';
 import 'components/storage_info_card.dart';
+import 'components/storage_info_total.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  final List<Map<String, String>> storageInfoList = [
+    {
+      'title': 'Documents Files',
+      'files': '1234 Files',
+      'capacity': '1.4GB',
+      'svgSource': 'assets/icons/doc_file.svg',
+    },
+    {
+      'title': 'Media Files',
+      'files': '1234 Files',
+      'capacity': '1.4GB',
+      'svgSource': 'assets/icons/media.svg',
+    },
+    {
+      'title': 'Other Files',
+      'files': '1234 Files',
+      'capacity': '1.4GB',
+      'svgSource': 'assets/icons/folder.svg',
+    },
+    {
+      'title': 'Unknown',
+      'files': '1234 Files',
+      'capacity': '1.4GB',
+      'svgSource': 'assets/icons/unknown.svg',
+    },
+  ];
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -52,10 +84,7 @@ class DashboardScreen extends StatelessWidget {
                           ),
                         ),
                         const Chart(),
-                        StorageInfoCard(title: 'Documents Files', files: '1234 Files', capacity: '1.4GB', svgSource: 'assets/icons/doc_file.svg', ),
-                        StorageInfoCard(title: 'Media Files', files: '1234 Files', capacity: '1.4GB', svgSource: 'assets/icons/media_file.svg', ),
-                        StorageInfoCard(title: 'Odher Files', files: '1234 Files', capacity: '1.4GB', svgSource: 'assets/icons/folder.svg', ),
-                        StorageInfoCard(title: 'Unknown', files: '1234 Files', capacity: '1.4GB', svgSource: 'assets/icons/unknown.svg', ),
+                        StorageInfoListView(storageInfoList: storageInfoList)
                       ],
                     ),
                   ),
