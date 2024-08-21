@@ -15,17 +15,17 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
+          const Expanded(
             child: SideMenu(),
           ),
           Expanded(
             flex: 5,
-            child: DashboardScreen(),
+            child: DashboardScreen(gridList: gridList,),
           ),
         ],
       )),

@@ -9,7 +9,8 @@ import 'components/storage_info_card.dart';
 import 'components/storage_info_total.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+  const DashboardScreen({super.key, required this.gridList});
+  final List<Map<String, String>> gridList;
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -70,17 +71,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ],
                           ),
                         ),
-                        
                         GridView.builder(
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            crossAxisSpacing: defaultPadding,
-                          ),
-                          itemCount: 4,
-                          itemBuilder: (context, index) => GridContainer(title: '$index',),
-                        ),
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4,
+                              crossAxisSpacing: defaultPadding,
+                            ),
+                            itemCount: gridList.length,
+                            itemBuilder: (context, index) => GridContainer(
+                                title: gridList[index]['title']!,
+                                files: gridList[index]['files']!,
+                                gb: gridList[index]['gb']!,
+                                svgSrcGrid: gridList[index]['svgSrcGrid']!,
+                                pressGrid: () {})),
                       ],
                     ),
                   ),
@@ -121,9 +125,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
 class GridContainer extends StatelessWidget {
   const GridContainer({
-    super.key, required this.title,
+    super.key,
+    required this.title,
+    required this.files,
+    required this.gb,
+    required this.svgSrcGrid,
+    required this.pressGrid,
   });
-  final String title ;
+  final String title, files, gb, svgSrcGrid;
+  final VoidCallback pressGrid;
 
   @override
   Widget build(BuildContext context) {
@@ -145,25 +155,54 @@ class GridContainer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10)),
                 child: SvgPicture.asset('assets/icons/Documents.svg'),
               ),
-              Icon(Icons.menu)
+              InkWell(onTap: pressGrid, child: Icon(Icons.menu))
             ],
           ),
           Text(
-            'Documents',
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(fontWeight: FontWeight.bold, ),
+            title,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
           ),
           Text('------'),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-            Text('1234 Files', style: Theme.of(context).textTheme.labelSmall?.copyWith(color: Colors.white70),),
-            Text('1.9GB', style: Theme.of(context).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold),),
-          ],)
+              Text(
+                files,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelSmall
+                    ?.copyWith(color: Colors.white70),
+              ),
+              Text(
+                gb,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelSmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ],
+          )
         ],
       ),
     );
   }
 }
+
+final List<Map<String, String>> gridList = [
+  {
+    'title': 'Documents',
+    'files': '1234 Files',
+    'gb': '1.4GB',
+    'svgSrcGrid': 'assets/icons/Documents.svg',
+    'press': ''
+  },
+  {
+    'title': 'Google Drive',
+    'files': '5677 Files',
+    'gb': '1.1GB',
+    'svgSrcGrid': 'assets/icons/google_drive.svg',
+    'press': ''
+  },
+];
