@@ -1,8 +1,11 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:responsive_admin_panel_ui/constants.dart';
 
+import 'components/chart.dart';
 import 'components/header.dart';
+import 'components/storage_info_card.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -18,19 +21,43 @@ class DashboardScreen extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  flex: 3,
+                  flex: 4,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.amber,
+                      borderRadius: BorderRadius.circular(10),
+                      color: secondaryColor,
                     ),
-                    height: 600,
+                    height: MediaQuery.of(context).size.height,
                   ),
                 ),
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Container(
-                    color: Colors.red,
-                    height: 600,
+                    //padding: EdgeInsets.all(defaultPadding),
+                    margin: EdgeInsets.all(defaultPadding),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: secondaryColor,
+                    ),
+                    height: MediaQuery.of(context).size.height,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(defaultPadding),
+                          child: Text(
+                            'Storage Details',
+                            style: Theme.of(context).textTheme.headlineSmall,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        const Chart(),
+                        StorageInfoCard(title: 'Documents Files', files: '1234 Files', capacity: '1.4GB', svgSource: 'assets/icons/doc_file.svg', ),
+                        StorageInfoCard(title: 'Media Files', files: '1234 Files', capacity: '1.4GB', svgSource: 'assets/icons/media_file.svg', ),
+                        StorageInfoCard(title: 'Odher Files', files: '1234 Files', capacity: '1.4GB', svgSource: 'assets/icons/folder.svg', ),
+                        StorageInfoCard(title: 'Unknown', files: '1234 Files', capacity: '1.4GB', svgSource: 'assets/icons/unknown.svg', ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -39,3 +66,4 @@ class DashboardScreen extends StatelessWidget {
         )));
   }
 }
+
