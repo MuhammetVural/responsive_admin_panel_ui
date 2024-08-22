@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:responsive_admin_panel_ui/constants.dart';
 
+import '../../responsive.dart';
 import 'components/chart.dart';
 import 'components/header.dart';
 import 'components/my_files_grid_view.dart';
@@ -20,6 +21,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobile(context);
     return SingleChildScrollView(
         padding: EdgeInsets.all(defaultPadding),
         child: SafeArea(
@@ -74,13 +76,41 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         const MyFielsGridView(),
                         const RecentFiles(),
+                        if(isMobile)
+                        Container(
+                    //padding: EdgeInsets.all(defaultPadding),
+                    margin: EdgeInsets.all(defaultPadding),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: secondaryColor,
+                    ),
+                    height: MediaQuery.of(context).size.height,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(defaultPadding),
+                          child: Text(
+                            'Storage Details',
+                            style: Theme.of(context).textTheme.headlineSmall,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        const Chart(),
+                        StorageInfoListView(storageInfoList: storageInfoList)
+                      ],
+                    ),
+                  ),
                       ],
                     ),
                   ),
                 ),
+                if(!isMobile)
                 Expanded(
                   flex: 2,
-                  child: Container(
+                  child: 
+                  
+                  Container(
                     //padding: EdgeInsets.all(defaultPadding),
                     margin: EdgeInsets.all(defaultPadding),
                     decoration: BoxDecoration(
@@ -213,16 +243,19 @@ class RecentFiles extends StatelessWidget {
               SvgPicture.asset(svgSrcRecent),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-                child: Text(fileName),
+                child: Text(fileName, maxLines: 1,
+                  overflow: TextOverflow.ellipsis,),
               ),
             ],
           ),
         ),
         DataCell(
-          Text(date),
+          Text(date, maxLines: 1,
+            overflow: TextOverflow.ellipsis,),
         ),
         DataCell(
-          Text(size),
+          Text(size, maxLines: 1,
+            overflow: TextOverflow.ellipsis,),
         ),
       ],
     );

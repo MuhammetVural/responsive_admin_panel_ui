@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../constants.dart';
+import '../../../responsive.dart';
 
 class MyFielsGridView extends StatelessWidget {
   const MyFielsGridView({
@@ -12,12 +13,15 @@ class MyFielsGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobile(context);
     return GridView.builder(
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       gridDelegate:
           SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
+        crossAxisCount: !isMobile ? 4 : 2,
         crossAxisSpacing: defaultPadding,
+            mainAxisSpacing: defaultPadding,
       ),
       itemCount: gridList.length,
       itemBuilder: (context, index) => GridContainer(

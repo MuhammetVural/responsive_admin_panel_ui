@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../constants.dart';
+import '../../../responsive.dart';
 
 class Header extends StatelessWidget {
   const Header({
@@ -10,13 +11,24 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDesktop = Responsive.isDesktop(context);
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.all(defaultPadding),
-          child: Text(
-            'Dashboard',
-            style: Theme.of(context).textTheme.headlineSmall,
+          padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+          child: Row(
+            children: [
+              !isDesktop ?
+              Padding(
+                padding: const EdgeInsets.only(right: defaultPadding),
+                child: IconButton(onPressed: (){Scaffold.of(context).openDrawer();}, icon: Icon(Icons.menu)),
+              )
+              :
+              Text(
+                'Dashboard',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ],
           ),
         ),
         Spacer(),

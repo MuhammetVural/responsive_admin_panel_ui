@@ -11,8 +11,9 @@ class Chart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height/4,
+      height: MediaQuery.of(context).size.height/5,
       child: Stack(
+        fit: StackFit.passthrough,
         children: [
           PieChart(
             PieChartData(
@@ -22,28 +23,24 @@ class Chart extends StatelessWidget {
                 centerSpaceRadius: 80),
           ),
           Positioned.fill(
+            top: 0,
+            bottom: 0,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('29.9',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineLarge
-                        ?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            height: 0.9,
-                            ),
-                            
-                            ),
-                Text('of 128GB',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
-                            ),
+                Text(
+                  '29.9',
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w900,
+                        height: 0.9,
+                      ),
+                ),
+                Text(
+                  'of 128GB',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Colors.white, fontWeight: FontWeight.w600),
+                ),
               ],
             ),
           ),
