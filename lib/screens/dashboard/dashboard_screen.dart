@@ -5,12 +5,13 @@ import 'package:responsive_admin_panel_ui/constants.dart';
 
 import 'components/chart.dart';
 import 'components/header.dart';
+import 'components/my_files_grid_view.dart';
 import 'components/storage_info_card.dart';
 import 'components/storage_info_total.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key, required this.gridList});
-  final List<Map<String, String>> gridList;
+  final List<Map<String, dynamic>> gridList;
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -71,20 +72,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ],
                           ),
                         ),
-                        GridView.builder(
-                            shrinkWrap: true,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              crossAxisSpacing: defaultPadding,
-                            ),
-                            itemCount: gridList.length,
-                            itemBuilder: (context, index) => GridContainer(
-                                title: gridList[index]['title']!,
-                                files: gridList[index]['files']!,
-                                gb: gridList[index]['gb']!,
-                                svgSrcGrid: gridList[index]['svgSrcGrid']!,
-                                pressGrid: () {})),
+                        const MyFielsGridView(),
+                        const RecentFiles(),
                       ],
                     ),
                   ),
@@ -123,86 +112,164 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
-class GridContainer extends StatelessWidget {
-  const GridContainer({
+class RecentFiles extends StatelessWidget {
+  const RecentFiles({
     super.key,
-    required this.title,
-    required this.files,
-    required this.gb,
-    required this.svgSrcGrid,
-    required this.pressGrid,
+
   });
-  final String title, files, gb, svgSrcGrid;
-  final VoidCallback pressGrid;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(vertical: defaultPadding),
       padding: EdgeInsets.all(defaultPadding),
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 2,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: secondaryColor),
+          color: secondaryColor, borderRadius: BorderRadius.circular(10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: EdgeInsets.all(defaultPadding * 0.75),
-                decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(10)),
-                child: SvgPicture.asset('assets/icons/Documents.svg'),
-              ),
-              InkWell(onTap: pressGrid, child: Icon(Icons.menu))
-            ],
-          ),
           Text(
-            title,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            'Recent Files',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge
+                ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          Text('------'),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                files,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelSmall
-                    ?.copyWith(color: Colors.white70),
-              ),
-              Text(
-                gb,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelSmall
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
-            ],
-          )
+          SizedBox(
+            width: double.infinity,
+            child: DataTable(
+              //dataRowMinHeight: double.infinity,
+              horizontalMargin: 0,
+              columnSpacing: 100,
+              
+                columns: [
+                  DataColumn(
+                    headingRowAlignment: MainAxisAlignment.spaceBetween,
+                    numeric: false,
+                    label: Text(
+                      'File Name',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                          ),
+                    ),
+                  ),
+                  DataColumn(
+                    numeric: false,
+                    label: Text(
+                      'Date',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                          ),
+                    ),
+                  ),
+                  DataColumn(
+                    numeric: false,
+                    label: Text(
+                      'Size',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                          ),
+                    ),
+                  ),
+                ],
+                rows: List.generate(
+                  recentList.length,
+                  (index) => dataRowListviewBuilder(
+                      recentList[index]['fileName'],
+                      recentList[index]['date'],
+                      recentList[index]['size'],
+                      recentList[index]['svgSrcRecent'],),
+                )),
+          ),
         ],
       ),
     );
   }
+
+  DataRow dataRowListviewBuilder(
+      String fileName, String date, String size, String svgSrcRecent) {
+    return DataRow(
+      cells: [
+        DataCell(
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SvgPicture.asset(svgSrcRecent),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+                child: Text(fileName),
+              ),
+            ],
+          ),
+        ),
+        DataCell(
+          Text(date),
+        ),
+        DataCell(
+          Text(size),
+        ),
+      ],
+    );
+  }
 }
 
-final List<Map<String, String>> gridList = [
+final List<Map<String, dynamic>> recentList = [
   {
-    'title': 'Documents',
-    'files': '1234 Files',
-    'gb': '1.4GB',
-    'svgSrcGrid': 'assets/icons/Documents.svg',
-    'press': ''
+    'fileName': 'XD File',
+    'date': '03/02/2020',
+    'size': '1.4GB',
+    'svgSrcRecent': 'assets/icons/xd_file.svg',
   },
   {
-    'title': 'Google Drive',
-    'files': '5677 Files',
-    'gb': '1.1GB',
-    'svgSrcGrid': 'assets/icons/google_drive.svg',
-    'press': ''
+    'fileName': 'Figma File',
+    'date': '03/02/2024',
+    'size': '1.4GB',
+    'svgSrcRecent': 'assets/icons/Figma_file.svg',
+  },
+  {
+    'fileName': 'Documents ',
+    'date': '03/02/2024',
+    'size': '1.4GB',
+    'svgSrcRecent': 'assets/icons/doc_file.svg',
+  },
+  {
+    'fileName': 'Sound File',
+    'date': '03/02/2024',
+    'size': '1.4GB',
+    'svgSrcRecent': 'assets/icons/sound_file.svg',
+  },
+  {
+    'fileName': 'Media File',
+    'date': '03/02/2024',
+    'size': '1.4GB',
+    'svgSrcRecent': 'assets/icons/media_file.svg',
+  },
+  {
+    'fileName': 'Sals Pdf',
+    'date': '03/02/2024',
+    'size': '1.4GB',
+    'svgSrcRecent': 'assets/icons/pdf_file.svg',
+  },
+  {
+    'fileName': 'Excel File',
+    'date': '03/02/2024',
+    'size': '1.4GB',
+    'svgSrcRecent': 'assets/icons/excel_file.svg',
   },
 ];

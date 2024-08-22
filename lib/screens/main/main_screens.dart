@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../dashboard/components/my_files_grid_view.dart';
 import '../dashboard/dashboard_screen.dart';
 import 'components/side_menu.dart';
 
